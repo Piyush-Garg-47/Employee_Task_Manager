@@ -1,18 +1,43 @@
 import React from 'react'
 import { useState } from 'react'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthProvider'
 
 const CreateTask = () => {
+
+   const [userData , setuserData] = useContext(AuthContext)
+
   const [taskTitle, settaskTitle] = useState('')
   const [taskDescreption, settaskDescreption] = useState('')
   const [taskDate, settaskDate] = useState('')
   const [assingTo, setassingTo] = useState('')
   const [taskCategory, settaskCategory] = useState('')
 
-  const [task, setTask] = useState({})
+  const [Newtask, setNewTask] = useState({})
     const SbubmitHandler =(e) =>{
           e.preventDefault()
-         setTask({taskTitle , taskDescreption , taskDate , taskCategory  , active:false , new_task:true , failed:true , completed:false}) 
-         console.log(task);
+         setNewTask({taskTitle , taskDescreption , taskDate , taskCategory  , active:false , new_task:true , failed:false , completed:false}) 
+        
+         const data =userData 
+         
+
+         data.forEach(function(elem){
+          if(assingTo == elem.firstName){
+            elem.tasks.push(Newtask)
+           elem.taskNumbers.new_task = elem.taskNumbers.new_task  + 1 
+            
+          }
+         })
+         setuserData(data) ; 
+         console.log(data)
+
+       settaskTitle('');
+       settaskDescreption('');
+       settaskDate('');
+       settaskCategory('') ;
+       setassingTo('') ; 
+       
+
          
     }
   return (
